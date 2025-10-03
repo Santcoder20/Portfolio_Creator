@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- skill_detail.html -->
+<h2>Skill Details</h2>
+<p>Name: {{ skill.name }}</p>
+<p>Level: {{ skill.level }}</p>
+<a href="{% url 'users:edit_skill' skill.pk %}">Edit</a>
+<a href="{% url 'users:delete_skill' skill.pk %}">Delete</a>
+<a href="{% url 'users:dashboard' %}">Back</a>
+{% endblock %}

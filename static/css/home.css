@@ -1,0 +1,174 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #0f1724;
+  color: #e6eef8;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 10%;
+  background: linear-gradient(135deg, #1e293b, #0f1724);
+}
+
+.hero-text {
+  max-width: 550px;
+}
+.hero-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 18px;
+  color: #03a9f4;
+}
+.hero-text p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  text-align: justify;
+}
+.hero-buttons .btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 12px;
+  transition: transform 0.2s ease;
+}
+.hero-buttons .btn:hover {
+  transform: scale(1.05);
+}
+.btn.primary {
+  background: #03a9f4;
+  color: #0f1724;
+}
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #03a9f4;
+  color: #03a9f4;
+}
+.hero-image img {
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* Features */
+.features {
+  padding: 60px 10%;
+  background: #1e293b;
+  text-align: center;
+}
+.features h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #03a9f4;
+}
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+}
+.feature {
+  background: #2a3547;
+  padding: 20px;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+.feature:hover {
+  transform: translateY(-5px);
+}
+.feature i {
+  font-size: 2rem;
+  color: #03a9f4;
+  margin-bottom: 12px;
+}
+.feature h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+}
+.feature p {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #0f1724;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  /* Hero Section */
+  .hero {
+    flex-direction: column;
+    padding: 40px 5%;
+    text-align: center;
+  }
+  .hero-text {
+    max-width: 100%;
+  }
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+  .hero-text p {
+    font-size: 1rem;
+  }
+  .hero-buttons .btn {
+    display: block;
+    margin: 10px auto;
+  }
+  .hero-image img {
+    max-width: 90%;
+    margin-top: 20px;
+  }
+
+  /* Features Section */
+  .features {
+    padding: 40px 5%;
+  }
+  .features h2 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+  .feature-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .feature {
+    padding: 15px;
+  }
+  .feature h3 {
+    font-size: 1.1rem;
+  }
+  .feature p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 1.6rem;
+  }
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+  .feature h3 {
+    font-size: 1rem;
+  }
+  .feature p {
+    font-size: 0.85rem;
+  }
+  .hero-buttons .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}

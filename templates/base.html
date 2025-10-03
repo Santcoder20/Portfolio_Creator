@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Portfolio Maker{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between; /* Left and right sections */
+    align-items: center;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  /* Sections for left and right buttons */
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Base button style */
+  nav button {
+    background: #85d6ff; /* Light blue */
+    border: none;
+    border-radius: 12px;
+    color: #0d1b2a;
+    font-weight: 600;
+    padding: 14px 28px;
+    margin: 0 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+  }
+
+  /* Hover effect */
+  nav button:hover {
+    background: linear-gradient(90deg, #03a9f4, #85d6ff);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  /* Active/current page button */
+  nav button.active {
+    background: #0d1b2a; /* Dark blue */
+    color: #ffffff;
+    border: 2px solid #0d1b2a;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .nav-left, .nav-right {
+      flex-direction: column;
+      width: 100%;
+    }
+    nav button {
+      width: 90%;
+      margin: 5px 0;
+    }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    {% if user.is_authenticated %}
+      <form action="{% url 'users:dashboard' %}" method="get">
+        <button type="submit" class="{% if request.path == '/dashboard/' %}active{% endif %}">Dashboard</button>
+      </form>
+    {% else %}
+      <form action="/" method="get">
+        <button type="submit" class="{% if request.path == '/' %}active{% endif %}">Home</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <div class="nav-right">
+    {% if user.is_authenticated %}
+      <form method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
+    {% else %}
+      <form action="{% url 'users:login' %}" method="get">
+        <button type="submit" class="{% if request.path == '/login/' %}active{% endif %}">Login</button>
+      </form>
+
+      <form action="{% url 'users:signup' %}" method="get">
+        <button type="submit" class="{% if request.path == '/signup/' %}active{% endif %}">Sign Up</button>
+      </form>
+    {% endif %}
+  </div>
+</nav>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

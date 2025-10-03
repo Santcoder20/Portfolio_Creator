@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- certificate_detail.html -->
+<h2>Certificate Details</h2>
+<p>Title: {{ certificate.title }}</p>
+<p>Organization: {{ certificate.organization }}</p>
+<p>Issue Date: {{ certificate.issue_date }}</p>
+<a href="{{ certificate.certificate_file.url }}" target="_blank">Download Certificate</a>
+<a href="{% url 'users:edit_certificate' certificate.pk %}">Edit</a>
+<a href="{% url 'users:delete_certificate' certificate.pk %}">Delete</a>
+<a href="{% url 'users:dashboard' %}">Back</a>
+{% endblock %}

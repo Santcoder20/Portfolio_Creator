@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- experience_detail.html -->
+<h2>Experience Details</h2>
+<p>Company: {{ experience.company }}</p>
+<p>Position: {{ experience.position }}</p>
+<p>Start Date: {{ experience.start_date }}</p>
+<p>End Date: {{ experience.end_date }}</p>
+<p>Description: {{ experience.description }}</p>
+<a href="{% url 'users:edit_experience' experience.pk %}">Edit</a>
+<a href="{% url 'users:delete_experience' experience.pk %}">Delete</a>
+<a href="{% url 'users:dashboard' %}">Back</a>
+{% endblock %}

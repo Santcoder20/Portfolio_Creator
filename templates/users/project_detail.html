@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+</style>
+<div class="section"></div>
+<!-- project_detail.html -->
+<h2>Project Details</h2>
+<p>Title: {{ project.title }}</p>
+<p>Description: {{ project.description }}</p><br/>
+<a href="{{ project.link }}" target="_blank">Project Link</a><br/>
+{% if project.image %}
+    <img src="{{ project.image.url }}" alt="Project Image" />
+{% endif %}<br/>
+{% if project.video %}
+    <video src="{{ project.video.url }}" controls></video>
+{% endif %}
+<br/><br/>
+<a href="{% url 'users:edit_project' project.pk %}">Edit</a>
+<a href="{% url 'users:delete_project' project.pk %}">Delete</a>
+<a href="{% url 'users:dashboard' %}">Back</a>
+</div>
+{% endblock %}

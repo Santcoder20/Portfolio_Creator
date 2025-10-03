@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- education_detail.html -->
+<h2>Education Details</h2>
+<p><strong>Institution:</strong> {{ education.institution }}</p>
+<p><strong>Degree:</strong> {{ education.degree }}</p>
+<p><strong>Start Year:</strong> {{ education.start_year }}</p>
+<p><strong>End Year:</strong> {% if education.end_year %}{{ education.end_year }}{% else %}Present{% endif %}</p>
+
+{% if education.score %}
+  {% if education.score_type == "percentage" %}
+    <p><strong>Percentage:</strong> {{ education.score }}%</p>
+  {% else %}
+    <p><strong>CGPA:</strong> {{ education.score }}</p>
+  {% endif %}
+{% endif %}
+
+<a href="{% url 'users:edit_education' education.pk %}">Edit</a>
+<a href="{% url 'users:delete_education' education.pk %}">Delete</a>
+<a href="{% url 'users:dashboard' %}">Back</a>
+{% endblock %}

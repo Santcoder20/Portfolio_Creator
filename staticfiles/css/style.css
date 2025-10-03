@@ -1,0 +1,4 @@
+body { font-family: Arial, sans-serif; margin: 20px; background: #0f1724; color: #e6eef8; }
+nav a { margin-right: 12px; color: #9bd; }
+.project { border: 1px solid #234; padding: 8px; margin-bottom: 8px; }
+img { border-radius: 6px; }

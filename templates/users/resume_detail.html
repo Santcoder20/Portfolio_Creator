@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- resume_detail.html -->
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; background: #2a2f3f; border-radius: 12px; color: #e0e0e0; text-align: center;">
+  <h2>Resume Detail</h2>
+
+  {% if resume.resume_file %}
+      <p><a href="{{ resume.resume_file.url }}" target="_blank" class="btn-small">View Resume</a></p>
+  {% else %}
+      <p>No file uploaded.</p>
+  {% endif %}
+
+  {% if resume.resume_link %}
+      <p><a href="{{ resume.resume_link }}" target="_blank" class="btn-small">Online Resume</a></p>
+  {% endif %}
+
+  <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <a href="{% url 'users:edit_resume' %}" class="btn-small">Edit</a>
+      <a href="{% url 'users:delete_resume' %}" class="btn-danger">Delete</a>
+      <a href="{% url 'users:dashboard' %}" class="btn-small">Back</a>
+  </div>
+</div>
+{% endblock %}
