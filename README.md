@@ -147,9 +147,10 @@ This project is deployed on **PythonAnywhere**:
 For your own deployment:
 1. Create a PythonAnywhere account.  
 2. Upload your project files.  
-3. Set up a virtual environment.  
-4. Configure WSGI and static files.  
-5. Run migrations and restart the web app.
+3. Set up a virtual environment.
+4. Change setting.py to allow host and add email details in end
+5. Configure WSGI and static files.  
+6. Run migrations and restart the web app.
 
 ---
 
