@@ -7,7 +7,7 @@
   max-width: 400px;
   margin: 50px auto;
   padding: 30px;
-  background: rgba(255, 255, 255, 0.1); /* translucent style like hero */
+  background: rgba(255, 255, 255, 0.1); /* translucent style */
   backdrop-filter: blur(10px);
   border-radius: 12px;
   text-align: center;
@@ -18,23 +18,67 @@
   font-size: 2rem;
 }
 
-.auth-form button {
+/* form fields */
+.auth-form p {
+  margin: 10px 0;
+  text-align: left;
+}
+
+.auth-form input {
   width: 100%;
   padding: 10px;
-  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 6px;
+  margin-bottom: 12px;
   font-size: 1rem;
 }
 
+/* buttons */
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
 .auth-container .btn.secondary {
-  width: 60%;
+  width: 70%;
   padding: 10px;
   margin-top: 14px;
   font-size: 1rem;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+}
+
+/* --- Mobile tweaks --- */
+@media (max-width: 600px) {
+  .auth-container {
+    width: 90%;
+    padding: 20px;
+    margin: 30px auto;
+  }
+
+  .auth-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-form input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .auth-form button,
+  .auth-container .btn.secondary {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }
 </style>
+
 <div class="auth-container">
   <h1>Login</h1>
   <form method="post" class="auth-form">{% csrf_token %}
@@ -42,8 +86,8 @@
     <button type="submit" class="btn primary">Login</button>
   </form>
   <p>Don't have an account?</p>
-<form action="{% url 'users:signup' %}" method="get" class="btn secondary">
-        <button type="submit" class="{% if request.path == '/signup/' %}active{% endif %}">Sign Up</button>
-</form>
+  <form action="{% url 'users:signup' %}" method="get">
+    <button type="submit" class="btn secondary {% if request.path == '/signup/' %}active{% endif %}">Sign Up</button>
+  </form>
 </div>
 {% endblock %}

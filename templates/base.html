@@ -5,25 +5,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Portfolio Maker{% endblock %}</title>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 <style>
   nav {
     display: flex;
-    justify-content: space-between; /* Left and right sections */
+    justify-content: space-between; /* keep left and right on same line */
     align-items: center;
     padding: 10px 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* prevent stacking */
   }
 
-  /* Sections for left and right buttons */
   .nav-left, .nav-right {
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
   }
 
   /* Base button style */
   nav button {
-    background: #85d6ff; /* Light blue */
+    background: #85d6ff;
     border: none;
     border-radius: 12px;
     color: #0d1b2a;
@@ -33,6 +33,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 1.2rem;
+    flex: 0 1 auto; /* allow shrink */
   }
 
   /* Hover effect */
@@ -45,7 +46,7 @@
 
   /* Active/current page button */
   nav button.active {
-    background: #0d1b2a; /* Dark blue */
+    background: #0d1b2a;
     color: #ffffff;
     border: 2px solid #0d1b2a;
   }
@@ -53,16 +54,17 @@
   /* Responsive */
   @media (max-width: 600px) {
     nav {
-      flex-direction: column;
-      align-items: flex-start;
+      flex-wrap: nowrap; /* force single row */
     }
+
     .nav-left, .nav-right {
-      flex-direction: column;
-      width: 100%;
+      flex-wrap: nowrap;
     }
+
     nav button {
-      width: 90%;
-      margin: 5px 0;
+      padding: 8px 14px;  /* smaller buttons */
+      font-size: 0.9rem;
+      margin: 4px;
     }
   }
 </style>

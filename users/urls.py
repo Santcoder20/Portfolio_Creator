@@ -1,13 +1,14 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-
+from users.views import log_in
 app_name = 'users'
 
 urlpatterns = [
     path('', views.public_index, name='public_index'),
     path('signup/', views.sign_up, name='signup'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('verify-otp/', views.verify_otp, name='verify_otp'),
+    path('login/', log_in.as_view(), name='login'),
     path('logout', auth_views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/edit', views.edit_profile, name='edit_profile'),
@@ -40,5 +41,6 @@ urlpatterns = [
     path('experience/<int:pk>/delete', views.delete_experience, name='delete_experience'),
     path('certificate/<int:pk>/delete', views.delete_certificate, name='delete_certificate'),
     path('resume/delete', views.delete_resume, name='delete_resume'),
+    path('background/delete', views.delete_background, name='delete_background'),
 
 ]

@@ -5,364 +5,339 @@
   <title>{{ owner.username }} | Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<!-- Add this inside <head> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
   <style>
-    :root {
-      --primary-bg: #0e1a2b;   /* dark blue base */
-      --card-bg: rgba(20, 30, 50, 0.65); /* translucent dark blue card */
-      --text-light: #f2f4f8;
-      --text-dark: #111;
-    }
+:root {
+  --text-color-main: #f2f4f8;
+  --text-color-sidebar: #f2f4f8;
+  --text-light: #f2f4f8;
+  --text-dark: #111;
+  --primary-bg: #0e1a2b;
+  --sidebar-bg: #0e1a2b;
+  --bg-image: none;
+  --sidebar-bg-image: none;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* Reset & global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  line-height: 1.6;
 
-    body {
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      line-height: 1.6;
-      color: var(--text-light);
-      background: var(--primary-bg) no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-      display: flex;
-      transition: background 0.5s ease;
-    }
-
-    h2 {
-      margin-bottom: 15px;
-      font-size: 1.6rem;
-    }
-
-    h3 {
-      margin-bottom: 8px;
-      font-size: 1.2rem;
-    }
-
-    a {
-      color: #4aa3ff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* ===== Sidebar ===== */
-    .sidebar {
-      position: fixed;
-      width: 240px;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background: var(--primary-bg);
-      background-size: cover;
-      background-position: center;
-      color: var(--text-light);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
-      overflow-y: auto;
-      z-index: 1000;
-      transition: background 0.5s ease;
-    }
-
-    .profile-pic {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-      margin: 0 auto 10px auto;
-      border: 2px solid rgba(255,255,255,0.8);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    .profile .name {
-      font-size: 1.1rem;
-      text-align: center;
-      margin-bottom: 5px;
-    }
-
-    .profile .bio {
-      font-size: 0.85rem;
-      text-align: center;
-      opacity: 0.85;
-      margin-bottom: 8px;
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 5px;
-    }
-
-    .social-icons a {
-      color: var(--text-light);
-      font-size: 1rem;
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
-
-    .social-icons a:hover {
-      color: #4aa3ff;
-      transform: scale(1.1);
-    }
-
-    .nav-links {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .nav-links a {
-      display: block;
-      padding: 8px;
-      text-align: center;
-      font-weight: 500;
-      border-radius: 6px;
-      transition: background 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* ===== Main content ===== */
-    .portfolio-container {
-      flex: 1;
-      margin-left: 240px;
-      padding: 30px;
-      width: 100%;
-      max-width: 1100px;
-    }
-
-    section {
-      margin-bottom: 40px;
-    }
-
-    /* Translucent blurred cards without color overlay */
-    .section-item {
-      background: rgba(255, 255, 255, 0.05); /* very light transparent white */
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.2);
-      color: var(--text-light);
-    }
-
-
-    /* Project Images */
-    .project-image {
-      width: 100%;
-      max-width: 280px;
-      height: 180px;
-      object-fit: cover;
-      margin-top: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    /* Skills */
-    .skills-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .skill-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .skill-bar {
-      background: rgba(255,255,255,0.15);
-      height: 8px;
-      border-radius: 4px;
-    }
-
-    .skill-progress {
-      background: #4aa3ff;
-      height: 100%;
-      border-radius: 4px;
-    }
-
-    /* Mobile */
-    @media (max-width: 900px) {
-      .portfolio-container {
-        margin-left: 0;
-        padding-top: 80px;
-      }
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: fixed;
-        top: 0;
-        left: 0;
-        transform: translateY(-100%);
-      }
-      .sidebar.open {
-        transform: translateY(0);
-      }
-    }
-    /* Justify all paragraph & body text */
-h1,h2,h3,p,
-.section-item,
-.section-item p,
-.section-item li {
+  background-size: cover;
+  min-height: 100vh;
+  overflow-x: hidden;
   text-align: justify;
-  text-justify: inter-word;
 }
 
-/* Keep titles & navigation centered or left */
-h1, h2, h3, .name, .nav-links a {
-  text-align: left;
+/* Layout wrapper */
+.layout {
+  display: flex;
+  min-height: 100vh;
 }
 
-  </style>
+/* Sidebar styles */
+.sidebar {
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed; /* Fixed instead of sticky */
+  background: var(--sidebar-bg-image) no-repeat center center/cover;
+  background-color: var(--sidebar-bg);
+  color: var(--text-color-sidebar);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 1000;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('sidebar').classList.toggle('open');
-    }
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.8);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.name {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 5px;
+  color: var(--text-light);
+}
+.bio {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  text-align: center;
+  margin-bottom: 8px;
+  color: var(--text-light);
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+.social-icons a {
+  font-size: 1rem;
+  transition: color 0.2s, transform 0.2s;
+  color: var(--text-light);
+}
+.social-icons a:hover {
+  color: #4aa3ff;
+  transform: scale(1.1);
+}
 
-    // Helper to set brightness-aware text color
-    function setTextColorBasedOnBg(imgUrl, target) {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = imgUrl;
-      img.onload = function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-        const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
-        let r, g, b, avg, colorSum = 0;
-        for (let i = 0; i < imageData.length; i += 4) {
-          r = imageData[i]; g = imageData[i+1]; b = imageData[i+2];
-          avg = (r + g + b) / 3;
-          colorSum += avg;
-        }
-        const brightness = colorSum / (img.width * img.height);
-        if (brightness > 140) {
-          target.style.color = '#111';
-          document.documentElement.style.setProperty('--text-light', '#111');
-        } else {
-          target.style.color = '#f2f4f8';
-          document.documentElement.style.setProperty('--text-light', '#f2f4f8');
-        }
-      }
-    }
+/* Navigation links inside sidebar */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}
+.nav-links a {
+  display: block;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  color: var(--text-light);
+  transition: background 0.2s;
+}
+.nav-links a:hover {
+  background: rgba(255,255,255,0.1);
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-      {% if background and background.main_file %}
-        document.body.style.backgroundImage = "url('{{ background.main_file.url }}')";
-        setTextColorBasedOnBg('{{ background.main_file.url }}', document.body);
-      {% endif %}
+/* Main Content Container */
+.portfolio-container {
+  flex: 1;
+  padding: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+  margin-left: 280px; /* offset for fixed sidebar */
+}
+section {
+  margin-bottom: 40px;
+}
+.section-item {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+  color: var(--text-color-main);
+}
 
-      {% if background and background.sidebar_file %}
-        sidebar.style.backgroundImage = "url('{{ background.sidebar_file.url }}')";
-        setTextColorBasedOnBg('{{ background.main_file.url }}', document.body);
-      {% endif %}
-    });
-  </script>
+/* Projects images */
+.project-image {
+  width: 100%;
+  max-width: 280px;
+  height: 180px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Skills */
+.skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.skill-bar {
+  background: rgba(255,255,255,0.15);
+  height: 8px;
+  border-radius: 4px;
+}
+.skill-progress {
+  background: #4aa3ff;
+  height: 100%;
+  border-radius: 4px;
+}
+
+/* Menu Toggle - Hidden by default */
+.menu-toggle {
+  display: none;
+}
+
+/* Overlay for mobile */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+body{
+      color: var(--text-color-main);
+
+  background: var(--bg-image) no-repeat center center fixed;
+  background-color: var(--sidebar-bg);
+}
+.sidbar{
+  background: var(--sidebar-bg-image) no-repeat center center/cover;
+  background-color: var(--sidebar-bg);
+}
+
+/* Responsive adjustments for mobile */
+@media(max-width: 900px) {
+  .menu-toggle {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-color-sidebar);
+    font-size: 1.5rem;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    z-index: 1200; /* Higher than sidebar */
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open {
+
+    transform: translateX(0);
+
+  }
+
+  .overlay.show {
+    display: block;
+  }
+
+  .portfolio-container {
+    padding: 70px 20px 30px;
+    margin: 0 auto;
+    margin-left: 0;
+  }
+}
+</style>
+
 </head>
 
 <body>
-  <button class="menu-toggle" onclick="toggleMenu()">
-    <i class="fas fa-bars"></i>
-  </button>
+  <div class="layout">
+    <!-- Toggle button -->
+    <button class="menu-toggle" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
 
-  {% include 'users/sidebar.html' %}
+    <!-- Overlay -->
+    <div class="overlay" onclick="toggleMenu()"></div>
 
-  <div class="portfolio-container">
-    <!-- About -->
-    <section id="about">
-      <div class="section-item">
-        <h2>About</h2>
-        {% if profile.about %}
-          <p>{{ profile.about }}</p>
-        {% else %}
-          <p>No About available.</p>
-        {% endif %}
-      </div>
-    </section>
+    {% include 'users/sidebar.html' %}
 
-    <!-- Projects -->
-    <section id="projects">
-      <h2>Projects</h2>
-      {% if projects %}
-        {% for project in projects %}
-          <div class="section-item">
-            <h3>{{ project.title }}</h3>
-            <p>{{ project.description }}</p>
-            {% if project.link %}
-              <p><a href="{{ project.link }}" target="_blank">Visit Project</a></p>
-            {% endif %}
-            {% if project.image %}
-              <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="section-item"><p>No projects yet.</p></div>
-      {% endif %}
-    </section>
+    <div class="portfolio-container">
+      <!-- About -->
+      <section id="about">
+        <div class="section-item">
+          <h2>About</h2>
+          {% if profile.about %}
+            <p>{{ profile.about }}</p>
+          {% else %}
+            <p>No About available.</p>
+          {% endif %}
+        </div>
+      </section>
 
-    <!-- Skills -->
-    <section id="skills">
-      <h2>Skills</h2>
-      {% if skills %}
-        <div class="section-item skills-container">
-          {% for skill in skills %}
-            <div>
-              <div class="skill-header">
-                <span>{{ skill.name }}</span>
-                <span>{{ skill.level }}/10</span>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: {{ skill.level|floatformat:0 }}0%;"></div>
-              </div>
+      <!-- Projects -->
+      <section id="projects">
+        <h2>Projects</h2>
+        {% if projects %}
+          {% for project in projects %}
+            <div class="section-item">
+              <h3>{{ project.title }}</h3>
+              <p>{{ project.description }}</p>
+              {% if project.link %}
+                <p><a href="{{ project.link }}" target="_blank">Visit Project</a></p>
+              {% endif %}
+              {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+              {% endif %}
             </div>
           {% endfor %}
-        </div>
-      {% else %}
-        <div class="section-item"><p>No skills listed.</p></div>
-      {% endif %}
-    </section>
+        {% else %}
+          <div class="section-item"><p>No projects yet.</p></div>
+        {% endif %}
+      </section>
 
-    <section id="education">
-      <h2>Education</h2>
-      {% if education %}
-        {% for edu in education %}
-          <div class="section-item">
-            <strong>{{ edu.degree }}</strong> — {{ edu.institution }}<br>
-            {% if edu.score %}
-              {% if edu.score_type == "Percentage" %}
-                <small><br/></small>Percentage: {{ edu.score }}%
-              {% else %}
-                <small><br/></small>CGPA: {{ edu.score }}
-              {% endif %}
-            {% endif %}<br>
-            <small>{{ edu.start_year }}{% if edu.end_year %} - {{ edu.end_year }}{% else %} - Present{% endif %}</small>
+      <!-- Skills -->
+      <section id="skills">
+        <h2>Skills</h2>
+        {% if skills %}
+          <div class="section-item skills-container">
+            {% for skill in skills %}
+              <div>
+                <div class="skill-header">
+                  <span>{{ skill.name }}</span>
+                  <span>{{ skill.level }}/10</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-progress" style="width: {{ skill.level|floatformat:0 }}0%;"></div>
+                </div>
+              </div>
+            {% endfor %}
           </div>
-        {% endfor %}
-      {% else %}
-        <p>No education records.</p>
-      {% endif %}
-    </section>
+        {% else %}
+          <div class="section-item"><p>No skills listed.</p></div>
+        {% endif %}
+      </section>
 
-
+      <section id="education">
+        <h2>Education</h2>
+        {% if education %}
+          {% for edu in education %}
+            <div class="section-item">
+              <strong>{{ edu.degree }}</strong> — {{ edu.institution }}<br>
+              {% if edu.score %}
+                {% if edu.score_type == "Percentage" %}
+                  <small><br/></small>Percentage: {{ edu.score }}%
+                {% else %}
+                  <small><br/></small>CGPA: {{ edu.score }}
+                {% endif %}
+              {% endif %}<br>
+              <small>{{ edu.start_year }}{% if edu.end_year %} - {{ edu.end_year }}{% else %} - Present{% endif %}</small>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No education records.</p>
+        {% endif %}
+      </section>
 
       <section id="experience">
         <h2>Experience</h2>
@@ -415,7 +390,6 @@ h1, h2, h3, .name, .nav-links a {
         {% endif %}
       </section>
 
-     <!-- CONTACT -->
       <section id="contact">
         <h2>Contact</h2>
         <p><strong>Email:</strong> {{ owner.email }}</p>
@@ -426,16 +400,100 @@ h1, h2, h3, .name, .nav-links a {
           <p><strong>Location:</strong> {{ profile.location }}</p>
         {% endif %}
         {% if profile.linkedin %}
-          <p><strong><a href="{{ profile.linkedin }}" target="_blank"class="contact-link">LinkedIn
-
-           </a></strong></p>
+          <p><strong><a href="{{ profile.linkedin }}" target="_blank" class="contact-link">LinkedIn</a></strong></p>
         {% endif %}
         {% if profile.github %}
-          <p><strong><a href="{{ profile.github }}" target="_blank" class="contact-link">GitHub </a></strong></p>
+          <p><strong><a href="{{ profile.github }}" target="_blank" class="contact-link">GitHub</a></strong></p>
         {% endif %}
         {% if profile.instagram %}
-          <p><strong><a href="{{ profile.instagram }}" target="_blank" class="contact-link">Instagram</a></strong> </p>
+          <p><strong><a href="{{ profile.instagram }}" target="_blank" class="contact-link">Instagram</a></strong></p>
         {% endif %}
-
       </section>
-</div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const colorThief = new ColorThief();
+
+  function adjustThemeWithColorThief(imgUrl, imageVar, textVar, filterTargetSelector) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = imgUrl;
+
+    img.onload = function () {
+      const [r, g, b] = colorThief.getColor(img);
+      const brightness = (r + g + b) / 3;
+      const textColor = brightness > 128 ? '#111' : '#f2f4f8';
+
+      document.documentElement.style.setProperty(textVar, textColor);
+      document.documentElement.style.setProperty(imageVar, `url('${imgUrl}')`);
+    };
+  }
+
+  // Adjust main and sidebar backgrounds
+  {% if background and background.main_file %}
+    adjustThemeWithColorThief('{{ background.main_file.url }}', '--bg-image', '--text-color-main', 'body,.section-item');
+  {% endif %}
+  {% if background and background.sidebar_file %}
+    adjustThemeWithColorThief('{{ background.sidebar_file.url }}', '--sidebar-bg-image', '--text-color-sidebar', '.nav-links,.social-icons,.name');
+  {% endif %}
+});
+
+const sidebar = document.getElementById('sidebar');
+const overlay = document.querySelector('.overlay');
+const menuToggle = document.querySelector('.menu-toggle');
+let touchStartX = 0, touchEndX = 0;
+
+function toggleMenu() {
+  if (window.innerWidth <= 900) {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+    updateMenuToggle();
+  }
+}
+
+function updateMenuToggle() {
+  if (sidebar.classList.contains('open')) {
+    menuToggle.style.display = 'none'; // hide when sidebar open
+  } else {
+    menuToggle.style.display = 'block'; // show when sidebar closed
+  }
+}
+
+// Swipe handling
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleGesture();
+});
+
+function handleGesture() {
+  if (window.innerWidth > 900) return;
+  const diff = touchEndX - touchStartX;
+  if (Math.abs(diff) < 50) return;
+
+  if (diff > 50) { // swipe right → open sidebar
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  } else if (diff < -50) { // swipe left → close sidebar
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+  updateMenuToggle(); // always update toggle display
+}
+
+// Ensure proper display on resize
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 900) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    menuToggle.style.display = 'block'; // reset toggle for large screens
+  }
+});
+
+</script>
+
+
+</body>
+</html>

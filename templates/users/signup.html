@@ -1,47 +1,137 @@
 {% extends 'base.html' %}
 {% block title %}Sign Up - Portfolio Maker{% endblock %}
+
 {% block content %}
 {% load static %}
+
 <style>
+/* Container */
 .auth-container {
   max-width: 400px;
   margin: 50px auto;
   padding: 30px;
-  background: rgba(255, 255, 255, 0.1); /* translucent style like hero */
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
+/* Heading */
 .auth-container h1 {
   margin-bottom: 20px;
   font-size: 2rem;
+  color: #fff;
 }
 
-.auth-form button {
+/* Form fields */
+.auth-form p {
+  margin: 10px 0;
+  text-align: left;
+  color: #fff;
+}
+
+.auth-form input {
   width: 100%;
   padding: 10px;
-  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 6px;
+  margin-bottom: 12px;
   font-size: 1rem;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
 }
 
+.auth-form input::placeholder {
+  color: #eee;
+}
+
+/* Buttons */
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: #45a049;
+}
+
+/* Secondary button (login redirect) */
 .auth-container .btn.secondary {
-  width: 60%;
+  width: 70%;
   padding: 10px;
-  margin-top: 14px;
+  margin: 14px auto 0;
   font-size: 1rem;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.auth-container .btn.secondary:hover {
+  background-color: #1976d2;
+}
+
+/* Error messages */
+.auth-form .errorlist {
+  color: #ff6b6b;
+  margin: 0 0 10px;
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+}
+
+/* --- Mobile tweaks --- */
+@media (max-width: 600px) {
+  .auth-container {
+    width: 90%;
+    padding: 20px;
+    margin: 30px auto;
+  }
+
+  .auth-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-form input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .auth-form button,
+  .auth-container .btn.secondary {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }
 </style>
+
 <div class="auth-container">
   <h1>Create Your Account</h1>
-  <form method="post" class="auth-form">{% csrf_token %}
+
+  <form method="post" class="auth-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
     {{ form.as_p }}
     <button type="submit" class="btn primary">Sign Up</button>
   </form>
-  <p>Already have an account?</p>
-<form action="{% url 'users:login' %}" method="get" class='btn secondary'> <button type="submit">Login</button> </form>
+
+  <p style="color: #fff; margin-top: 15px;">Already have an account?</p>
+  <form action="{% url 'users:login' %}" method="get">
+    <button type="submit" class="btn secondary {% if request.path == '/login/' %}active{% endif %}">Login</button>
+  </form>
 </div>
+
 {% endblock %}

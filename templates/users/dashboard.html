@@ -119,19 +119,19 @@
     gap: 15px;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* ✅ responsive grid */
   }
-  .card, .skill-card {
+  .card, .skill-card, .profile-card{
     background: #2a2f3f;
     padding: 15px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     transition: transform 0.2s ease;
   }
-  .card:hover, .skill-card:hover { transform: translateY(-3px); }
-  .card h3, .skill-card h3 {
+  .card:hover, .skill-card:hover,.profile-card:hover { transform: translateY(-3px); }
+  .card h3, .skill-card h3, .profile-card h3{
     margin: 0 0 8px 0;
     color: #fff;
   }
-  .card p { font-size: 0.9rem; color: #b0b0b0; }
+  .card p, .profile-card p{ font-size: 0.9rem; color: #b0b0b0; }
 
   /* Skills */
   .skill-header {
@@ -169,7 +169,18 @@
     color: #03a9f4;
     transform: scale(1.15);
   }
-
+  .show {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+  }
   /* ✅ Media Queries for Mobile */
   @media (max-width: 768px) {
     .dashboard-header {
@@ -198,10 +209,18 @@
     .dashboard-header h1 {
       font-size: 1.2rem;
     }
-    .card, .skill-card {
+    .card, .skill-card, .profile-card{
       padding: 12px 15px;
     }
   }
+  a {
+  text-decoration: none;      /* Removes underline */
+  border: none;               /* Removes border if present */
+  outline: none;              /* Removes focus outline */
+  box-shadow: none;           /* Removes box shadow if present */
+}
+
+
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -214,15 +233,19 @@
   </div>
 
   <!-- Profile Section -->
+
+
+
 <div class="profile-card">
-  <a href="{% url 'users:edit_profile' %}" class="btn-small">
-  {% if request.user.profile.profile_pic %}
+
+<a href="{% url 'users:edit_profile' %}" class="show">
+
+  <div class="profile-info">
+        {% if request.user.profile.profile_pic %}
     <img src="{{ request.user.profile.profile_pic.url }}" alt="{{ request.user.username }}'s Profile Picture" class="profile-pic">
   {% else %}
     <img src="{% static 'images\default_profile.png' %}" alt="Default Profile Picture" class="profile-pic">
   {% endif %}
-
-  <div class="profile-info">
     <h2>{{ request.user.profile.full_name|default:request.user.username }}</h2>
 
     {% if request.user.profile.bio %}
@@ -230,7 +253,7 @@
     {% else %}
       <p>No bio added. </p>
     {% endif %}
-
+  </a>
     <div class="contact-icons">
       {% if owner.email %}
         <a href="mailto:{{ owner.email }}" title="Email"><i class="fa-solid fa-envelope"></i></a>
@@ -256,30 +279,34 @@
     </div>
 
     {% if not owner.email and not profile.phone_number and not profile.linkedin and not profile.github and not profile.instagram and not profile.whatsapp and not profile.location %}
-      <p>class="mt-2">No contact info added.</p>
+      <p class="mt-2">No contact info added.</p>
       {% endif %}
   </div>
-  </a>
+
 </div>
 
-  <!-- Projects -->
+<!-- Projects -->
   <div class="section">
     <div class="section-header">
       <h2>Projects</h2>
       <a href="{% url 'users:add_project' %}" class="btn-small">+ Add</a>
     </div>
+
     <div class="card-grid">
       {% for project in projects %}
+      <a href="{% url 'users:project_detail' project.pk %}">
         <div class="card">
-          <a href="{% url 'users:project_detail' project.pk %}">
+
             <h3>{{ project.title }}</h3>
             <p>{{ project.description|truncatewords:20 }}</p>
-          </a>
+
         </div>
+        </a>
       {% empty %}
         <p>No projects yet.</p>
       {% endfor %}
     </div>
+
   </div>
 
   <!-- Skills -->
@@ -290,16 +317,18 @@
     </div>
     <div class="card-grid">
       {% for skill in skills %}
+      <a href="{% url 'users:skill_detail' skill.pk %}">
         <div class="skill-card">
-          <a href="{% url 'users:skill_detail' skill.pk %}">
+
             <div class="skill-header">
                 <h3>{{ skill.name }}  <span class="skill-level">{{ skill.level }}/10</span></h3>
             </div>
             <div class="skill-bar">
               <div class="skill-progress" style="width: {{ skill.level|add:'0' }}0%;"></div>
             </div>
-          </a>
+
         </div>
+        </a>
       {% empty %}
         <p>No skills yet.</p>
       {% endfor %}
@@ -314,8 +343,9 @@
   </div>
   <div class="card-grid">
     {% for edu in education %}
+    <a href="{% url 'users:education_detail' edu.pk %}">
       <div class="card">
-        <a href="{% url 'users:education_detail' edu.pk %}">
+
           <h3>{{ edu.degree }}</h3>
           <p>{{ edu.institution }}</p>
           {% if edu.department %}
@@ -329,8 +359,9 @@
             {% endif %}
           {% endif %}
           <p>{{ edu.start_year }}{% if edu.end_year %} - {{ edu.end_year }}{% else %} - Present{% endif %}</p>
-        </a>
+
       </div>
+      </a>
     {% empty %}
       <p>No education records yet.</p>
     {% endfor %}
@@ -346,13 +377,15 @@
     </div>
     <div class="card-grid">
       {% for exp in experience %}
+      <a href="{% url 'users:experience_detail' exp.pk %}">
         <div class="card">
-          <a href="{% url 'users:experience_detail' exp.pk %}">
+
             <h3>{{ exp.position }}</h3>
             <p>{{ exp.company }}</p>
             <p>{{ exp.start_date }}{% if exp.end_date %} - {{ exp.end_date }}{% endif %}</p>
-          </a>
+
         </div>
+        </a>
       {% empty %}
         <p>No experiences yet.</p>
       {% endfor %}
@@ -367,13 +400,15 @@
     </div>
     <div class="card-grid">
       {% for cert in certificate %}
+      <a href="{% url 'users:certificate_detail' cert.pk %}">
         <div class="card">
-          <a href="{% url 'users:certificate_detail' cert.pk %}">
+
             <h3>{{ cert.title }}</h3>
             <p>{{ cert.organization }}</p>
             <p>{{ cert.issue_date }}</p>
-          </a>
+
         </div>
+        </a>
       {% empty %}
         <p>No certificates yet.</p>
       {% endfor %}
@@ -388,12 +423,14 @@
   </div>
   <div class="card-grid">
     {% if resume %}
+    <a href="{% url 'users:resume_detail' %}">
       <div class="card">
-        <a href="{% url 'users:resume_detail' %}">
+
           <h3>Resume Uploaded</h3>
           <p>Uploaded at: {{ resume.uploaded_at }}</p>
-        </a>
+
       </div>
+      </a>
     {% else %}
       <a href="{% url 'users:edit_resume' %}" class="btn-small">+ Upload</a>
     {% endif %}
@@ -406,12 +443,14 @@
   </div>
   <div class="card-grid">
     {% if background %}
+    <a href="{% url 'users:background_detail' %}">
       <div class="card">
-        <a href="{% url 'users:background_detail' %}">
+
           <h3>Background Uploaded</h3>
           <p>{{ background.name }}</p>
-        </a>
+
       </div>
+      </a>
     {% else %}
       <a href="{% url 'users:edit_background' %}" class="btn-small">+ Upload</a>
     {% endif %}

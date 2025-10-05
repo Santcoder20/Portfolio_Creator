@@ -1,84 +1,21 @@
-<style>
-.profile-pic {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-  margin: 0 auto 10px auto;
-  border: 2px solid rgba(255,255,255,0.8);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-.name {
-  font-size: 1.1rem;
-  text-align: center;
-  margin-bottom: 5px;
-  color: var(--text-light, #fff);
-}
-
-.bio {
-  font-size: 0.85rem;
-  text-align: center;
-  opacity: 0.85;
-  margin-bottom: 8px;
-  color: var(--text-light, #ddd);
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 5px;
-}
-
-.social-icons a {
-  color: var(--text-light, #f2f4f8);
-  font-size: 1rem;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.social-icons a:hover {
-  color: #4aa3ff;
-  transform: scale(1.1);
-}
-
-</style><aside class="sidebar" id='sidebar'>
+<aside class="sidebar" id="sidebar">
   {% if profile.profile_pic %}
     <img src="{{ profile.profile_pic.url }}" alt="{{ owner.username }}" class="profile-pic" />
   {% endif %}
 
   <h2 class="name">{{ profile.full_name|default:owner.get_full_name|default:owner.username }}</h2>
-
   {% if profile.bio %}
     <p class="bio">{{ profile.bio }}</p>
   {% endif %}
 
-  <!-- Social Icons -->
   <div class="social-icons">
-    {% if owner.email %}
-      <a href="mailto:{{ owner.email }}" target="_blank"><i class="fa-solid fa-envelope"></i></a>
-    {% endif %}
-    {% if profile.phone_number %}
-      <a href="tel:{{ profile.phone_number }}"><i class="fa-solid fa-phone"></i></a>
-    {% endif %}
-    {% if profile.linkedin %}
-      <a href="{{ profile.linkedin }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-    {% endif %}
-    {% if profile.github %}
-      <a href="{{ profile.github }}" target="_blank"><i class="fa-brands fa-github"></i></a>
-    {% endif %}
-    {% if profile.instagram %}
-      <a href="{{ profile.instagram }}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-    {% endif %}
-    {% if profile.whatsapp %}
-      <a href="{{ profile.whatsapp }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-    {% endif %}
-    {% if profile.location %}
-      <a href="https://www.google.com/maps/search/{{ profile.location }}" target="_blank"><i class="fa-solid fa-location-dot"></i></a>
-    {% endif %}
-  </div>
+    {% if owner.email %}<a href="mailto:{{ owner.email }}"><i class="fa-solid fa-envelope"></i></a>{% endif %}
+    {% if profile.phone_number %}<a href="tel:{{ profile.phone_number }}"><i class="fa-solid fa-phone"></i></a>{% endif %}
+    {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>{% endif %}
+    {% if profile.github %}<a href="{{ profile.github }}" target="_blank"><i class="fa-brands fa-github"></i></a>{% endif %}
+    {% if profile.instagram %}<a href="{{ profile.instagram }}" target="_blank"><i class="fa-brands fa-instagram"></i></a>{% endif %}
+    {% if profile.whatsapp %}<a href="{{ profile.whatsapp }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>{% endif %}
+    {% if profile.location %}<a href="https://www.google.com/maps/search/{{ profile.location }}" target="_blank"><i class="fa-solid fa-location-dot"></i></a>{% endif %}
   </div>
 
   <nav class="nav-links">

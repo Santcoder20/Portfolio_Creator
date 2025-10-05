@@ -2,27 +2,103 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import ProjectForm, SkillForm, SignUpForm, ProfileForm, CertificateForm, ExperienceForm, ResumeForm, EducationForm, BackGroundForm
+from .forms import ProjectForm, SkillForm, SignUpForm, LoginForm, ProfileForm, CertificateForm, ExperienceForm, ResumeForm, EducationForm, BackGroundForm
 from portfolio.models import Project, Skill, Education, Experience, Certificate, Resume, BackGround
+from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
+from .models import OTPVerification
+import random
+from django.contrib import messages
+from django.conf import settings
+
+
+def verify_otp(request):
+    if request.method == 'POST':
+        input_otp = request.POST.get('otp')
+        signup_data = request.session.get('signup_data')
+
+        if not signup_data:
+            messages.error(request, "No signup data found. Please try again.")
+            return redirect('users:signup')
+
+        email = signup_data['email']
+        real_otp = otp_store.get(email)
+
+        if real_otp and str(input_otp) == str(real_otp):
+            # Create user
+            user = User.objects.create_user(
+                username=signup_data['username'],
+                email=signup_data['email'],
+                password=signup_data['password1'],
+                first_name=signup_data.get('first_name', ''),
+                last_name=signup_data.get('last_name', ''),
+            )
+            # Optional: clear OTP and session data
+            otp_store.pop(email, None)
+            request.session.pop('signup_data', None)
+
+            messages.success(request, "Account created successfully! You can now log in.")
+            return redirect('users:login')
+        else:
+            messages.error(request, "Invalid OTP. Please try again.")
+
+    return render(request, 'users/verify_otp.html')
 
 
 def public_index(request):
     users = User.objects.all()[:20]
     return render(request, 'users/public_index.html', {'users': users})
 
+
+otp_store = {}
+
+
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('users:dashboard')
+            email = form.cleaned_data.get('email')
+            otp = random.randint(100000, 999999)
+
+            # store OTP temporarily
+            otp_store[email] = otp
+
+            # Compose a welcoming email with OTP
+            subject = 'Welcome to Portfolio Creator! Your OTP Inside'
+            message = f"""
+Hi there!
+
+Welcome to Portfolio Creator! 🎉
+
+Your One-Time Password (OTP) to complete the signup process is: {otp}
+
+Please enter this OTP on the verification page to finish creating your account.
+
+Thank you for joining us and happy portfolio building!
+
+— The Portfolio Creator Team
+"""
+            # Send OTP to email
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                fail_silently=False,  # set True if you don't want server errors to show
+            )
+
+            # Save form data for OTP verification step
+            request.session['signup_data'] = form.cleaned_data
+            return redirect('users:verify_otp')
     else:
         form = SignUpForm()
+
     return render(request, 'users/signup.html', {'form': form})
+
+class log_in(LoginView):
+    authentication_form = LoginForm
+    template_name = 'users/login.html'
+
 
 def user_portfolio(request, username):
     user = get_object_or_404(User, username=username)
@@ -301,10 +377,19 @@ def edit_background(request):
     else:
         form = BackGroundForm(instance=background)
     return render(request, 'users/edit_background.html', {'form': form})
+
 @login_required
 def delete_background(request):
     background = get_object_or_404(BackGround, user=request.user)
+    file_type = request.GET.get('type')
+
     if request.method == 'POST':
-        background.delete()
-        return redirect('users:dashboard')
-    return render(request, 'users/confirm_delete.html', {'object': background, 'type': 'background'})
+        if file_type == 'main' and background.main_file:
+            background.main_file.delete(save=True)
+        elif file_type == 'sidebar' and background.sidebar_file:
+            background.sidebar_file.delete(save=True)
+        return redirect('users:background_detail')
+
+    object_name = background.main_file.name if file_type == 'main' else background.sidebar_file.name
+    type_name = "Main File" if file_type == 'main' else "Sidebar File"
+    return render(request, 'users/confirm_delete.html', {'object': object_name, 'type': type_name})

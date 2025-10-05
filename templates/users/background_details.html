@@ -63,6 +63,7 @@
         {% if background.main_file %}
           <img src="{{ background.main_file.url }}" alt="Main File">
           <a href="{% url 'users:edit_background' %}">Change</a>
+          <a href="{% url 'users:delete_background' %}?type=main">Delete</a>
         {% else %}
           <p>Not uploaded</p>
           <a href="{% url 'users:edit_background' %}">Upload</a>
@@ -76,6 +77,7 @@
         {% if background.sidebar_file %}
           <img src="{{ background.sidebar_file.url }}" alt="Sidebar File">
           <a href="{% url 'users:edit_background' %}">Change</a>
+          <a href="{% url 'users:delete_background' %}?type=sidebar">Delete</a>
         {% else %}
           <p>Not uploaded</p>
           <a href="{% url 'users:edit_background' %}">Upload</a>
