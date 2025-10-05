@@ -7,8 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-CHANGE_ME')
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'santcoder20.pythonanywhere.com').split(',')
-
+ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,9 +59,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8},
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.UsernameOrEmailBackend',   # custom backend
+    'django.contrib.auth.backends.ModelBackend',  # default
+]
+LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = "users:dashboard"
 LOGOUT_REDIRECT_URL = "users:login"
@@ -73,12 +83,20 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-# where collectstatic will put all files
-STATIC_ROOT = BASE_DIR / "staticfiles"
-# optional: keep a "static" folder in your project for custom assets
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'santcoder20@gmail.com'
+EMAIL_HOST_PASSWORD = ('zelm swty rgyr gmcw')   # Use an app password, not your real password!

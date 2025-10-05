@@ -91,5 +91,5 @@ class Resume(models.Model):
 
 class BackGround(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    main_file = models.FileField(upload_to='backgrounds/')
-    sidebar_file = models.FileField(upload_to='backgrounds/')
+    main_file = models.FileField(upload_to='backgrounds/',blank= True, null=True)
+    sidebar_file = models.FileField(upload_to='backgrounds/',blank=True, null=True)
